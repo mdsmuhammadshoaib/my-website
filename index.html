@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madsheets - Google Workspace & Spreadsheet Solutions</title>
+    <!-- Use Tailwind CSS for a fully responsive and clean design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Urbanist', sans-serif;
+        }
+        /* Custom colors based on user request */
+        .text-green-custom {
+            color: #2ba24c;
+        }
+        .bg-green-custom {
+            background-color: #2ba24c;
+        }
+        .border-green-custom {
+            border-color: #2ba24c;
+        }
+        .text-gray-custom {
+            color: #555555;
+        }
+        /* Custom orange color based on user request */
+        .text-orange-custom {
+            color: #FF7040;
+        }
+        .border-orange-custom {
+            border-color: #FF7040;
+        }
+        /* Custom gray color for the paragraph text */
+        .text-gray-777 {
+            color: #777777;
+        }
+        /* Custom font sizes as per new request */
+        .text-24px {
+            font-size: 24px;
+        }
+        .text-22px {
+            font-size: 22px;
+        }
+        .text-20px {
+            font-size: 20px;
+        }
+        .text-21px {
+            font-size: 21px;
+        }
+        /* Style for non-active navigation links on hover */
+        .nav-link:hover::after {
+            transform: scaleX(1);
+        }
+        /* The base style for the underline effect on hover */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #2ba24c;
+            transform: scaleX(0);
+            transition: transform 0.3s ease-in-out;
+        }
+        /* Custom border thickness for the underline */
+        .border-b-3 {
+            border-bottom-width: 3px;
+        }
+        /* Custom class for the contact button hover effect to ensure a solid green fill */
+        .contact-button:hover {
+            background-color: #2ba24c;
+            color: white;
+            border-color: #2ba24c;
+        }
+        
+        /* I have removed the old 'clockwise' animation and replaced it with a new 'breathing-glow' one */
+        @keyframes breathing-glow {
+            0% {
+                /* Start with a subtle, low glow */
+                box-shadow: 0 0 5px 0px rgba(190, 255, 208, 0.4);
+            }
+            50% {
+                /* At the peak of the animation, increase the glow's size and brightness for a more prominent effect */
+                box-shadow: 0 0 25px 8px rgba(190, 255, 208, 0.8);
+            }
+            100% {
+                /* Return to the starting state */
+                box-shadow: 0 0 5px 0px rgba(190, 255, 208, 0.4);
+            }
+        }
+        
+        /* Apply the new animation to the green button to make it glow */
+        .bg-green-custom {
+            animation: breathing-glow 3s ease-in-out infinite;
+        }
+        
+        /* New custom class for a precise container width */
+        .max-w-1350px {
+            max-width: 1350px;
+        }
+
+        /* Message box styles */
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            text-align: center;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .hidden {
+            display: none;
+        }
+        /* Custom class to increase the font weight for the paragraph */
+        .text-semibolder {
+            font-weight: 500;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555555;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 0.375rem;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #2ba24c;
+        }
+        .time-slot-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #2ba24c;
+            color: #2ba24c;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .time-slot-btn.selected {
+            background-color: #2ba24c;
+            color: white;
+        }
+
+        /* --- New CSS for Logo Animation and Fading Edges --- */
+        /* Define the keyframes for the scrolling animation. It moves the element to the left */
+        @keyframes scroll-logos {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                /* The total width of the logos combined to ensure a smooth, looping scroll */
+                /* This value might need to be adjusted if more logos are added */
+                transform: translateX(-1500px);
+            }
+        }
+
+        /* Apply the animation to the logo container */
+        .logo-scroll-container {
+            /* Use a combination of classes to ensure the container is wide enough for all logos */
+            display: flex;
+            align-items: center;
+            /* `white-space: nowrap` ensures all logos stay on one line */
+            white-space: nowrap;
+            /* The animation property applies the `scroll-logos` keyframes */
+            animation: scroll-logos 40s linear infinite; /* `40s` for the duration, `linear` for a constant speed, `infinite` for continuous looping */
+        }
+
+        /* Styling for the fading effect at the edges */
+        .logo-fade-overlay {
+            /* Position the overlay relative to the main container */
+            position: relative;
+            /* Hide any content that overflows, effectively removing the scrollbar */
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .logo-fade-left, .logo-fade-right {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 15%; /* Width of the fade effect */
+            z-index: 10;
+            pointer-events: none; /* Allows clicks to pass through to the logos */
+        }
+
+        .logo-fade-left {
+            left: 0;
+            background: linear-gradient(to right, #f9fafb, rgba(249, 250, 251, 0));
+        }
+
+        .logo-fade-right {
+            right: 0;
+            background: linear-gradient(to left, #f9fafb, rgba(249, 250, 251, 0));
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+
+    <!-- Header Section -->
+    <!-- The header now spans the full width of the viewport and is fixed to the top -->
+    <header class="bg-white shadow-md fixed top-0 w-full z-10">
+        <!-- Reduced the py-4 to py-2 to make the header smaller vertically -->
+        <!-- Used the new default class for a precise width -->
+        <div class="container max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+            <!-- Logo -->
+            <!-- The logo itself is now bigger -->
+            <div class="flex items-center space-x-2">
+                <!-- This is a placeholder for the entire logo as a single image source is not available. 
+                     The height has been increased from h-10 to h-16 -->
+                <img src="C:\Users\mshoa\Desktop\logo.png" alt="Madsheets Logo" class="h-14 w-auto">
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-21px font-semibold text-gray-custom">
+                <!-- Active link: text is green, and has a persistent border bottom -->
+                <!-- The border width has been changed to `border-b-3` for an intermediate thickness -->
+                <a href="#" class="relative text-green-custom border-b-3 border-green-custom">Home</a>
+                <!-- Other links have a hover effect -->
+                <a href="#" class="relative nav-link">Services</a>
+                <a href="#" class="relative nav-link">Testimonials</a>
+            </nav>
+
+            <!-- Contact Button -->
+            <!-- The button now uses a custom class to ensure a solid green fill on hover -->
+            <!-- I have changed `py-0.5` to `py-1` to revert the button to its previous vertical size -->
+            <a href="#" class="hidden md:block px-4 py-0.5 border-2 border-green-custom text-green-custom rounded-full font-medium transition-all contact-button text-21px">
+                CONTACT US
+            </a>
+
+            <!-- Mobile Menu Button (Placeholder) -->
+            <button class="md:hidden text-gray-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <!-- I have added `py-32` to the main container to increase the space at the top and bottom of the section -->
+    <!-- Used the new default class for a precise width -->
+    <main class="container max-w-7xl mx-auto px-4 py-32 md:py-40">
+        <!-- I have added `items-center` to the parent flex container to vertically align the children -->
+        <!-- The flex-2 and lg:flex-2 classes have been added to give the text more space -->
+        <div class="flex flex-col lg:flex-row items-center justify-between space-y-12 lg:space-y-0 lg:space-x-12">
+            <!-- Text Content -->
+            <!-- I have changed the width from lg:w-7/12 to lg:w-5/12 to make the text container larger -->
+            <div class="text-center lg:text-left lg:w-[52%]">
+                <div class="inline-block px-4 py-1 border border-orange-custom text-orange-custom rounded-full text-20px mb-4 font-semibold">
+                    Achieve excellence with madsheets
+                </div>
+                <!-- The font size has been changed to 60px -->
+                <h1 class="font-extrabold leading-tight mb-4" style="font-size: 60px;">
+                    <span style="color: #444444;">Google workspace &</span>
+                    <br>
+                    <span class="text-green-custom">spreadsheet solutions</span>
+                </h1>
+                <!-- The paragraph text color has been updated to #777777 -->
+                <!-- The max-w class has been updated to allow the container to be wider -->
+                <!-- The margin-bottom has been increased from mb-6 to mb-8 to create more space -->
+                <!-- I have changed the font size back to 21px as requested -->
+                <p class="text-gray-777 leading-relaxed mb-8 mx-auto lg:mx-0" style="font-size: 20.5px; font-weight: normal;">
+                    Managing reports, data, or inventory doesn't have to be complex. Madsheets delivers smart and reliable spreadsheet solutions coupled with premium support.
+                </p>
+                <!-- The "BOOK APPOINTMENT" button now links to the appointment section -->
+                <div class="flex justify-center lg:justify-start space-x-4">
+                    <!-- The a tag has been changed to a button and a JavaScript function has been added to it -->
+                    <button onclick="showMessage()" class="inline-flex items-center px-6 py-2 bg-green-custom text-white rounded-full font-semibold transition-all hover:bg-green-custom hover:bg-opacity-80 text-21px">
+                        CONTACT NOW
+                    </button>
+                    <!-- The hover state has been inverted and the href now points to the embedded calendar section -->
+                    <!-- Added flex and items-center to vertically center the text within the buttons -->
+                    <a href="#appointment-section" class="inline-flex items-center px-6 py-2 border-2 border-green-custom text-green-custom rounded-full font-medium transition-all contact-button text-21px">
+                        BOOK APPOINTMENT
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Image of Laptop with spreadsheets -->
+            <!-- The top margin class `mt-48` has been removed to allow the new alignment class to work -->
+            <!-- I have changed the width from lg:w-5/12 to lg:w-5/12 to make the image container smaller -->
+            <div class="flex justify-center lg:justify-end relative lg:w-[48%] max-w-2xl">
+                <!-- Using a placeholder image since the original source is not available. -->
+                <img src="C:\Users\mshoa\Desktop\o.png" alt="Laptop showing spreadsheets and charts" class="w-full max-w-2xl rounded-lg">
+            </div>
+        </div>
+    </main>
+
+    <!-- Our Happy Customers Section -->
+    <section class="bg-gray-50 py-16">
+        <!-- Main container for the section, using the same max-w as other sections for consistency -->
+        <div class="container max-w-7xl mx-auto px-4">
+            <!-- Section title with the word "Happy" in green -->
+            <h2 class="text-center text-4xl font-extrabold text-gray-800 mb-12">
+                Our <span class="text-green-custom">Happy</span> Customers
+            </h2>
+
+            <!-- This new parent container handles the overflow and creates the fading edges -->
+            <div class="logo-fade-overlay">
+                <!-- The left and right fade overlays -->
+                <div class="logo-fade-left"></div>
+                <div class="logo-fade-right"></div>
+                
+                <!-- The inner container that holds the logos and is animated -->
+                <div class="logo-scroll-container">
+                    <!-- The logos are now duplicated to ensure a continuous loop without a visible jump -->
+                    <!-- The original logos -->
+                    <img src="https://placehold.co/120x60/888/fff?text=Square" alt="Square Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=Asana" alt="Asana Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=Airtable" alt="Airtable Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=DoorDash" alt="DoorDash Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=Shopify" alt="Shopify Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=Dropbox" alt="Dropbox Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=Slack" alt="Slack Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=Segment" alt="Segment Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+
+                    <!-- A copy of the logos to create the infinite loop effect -->
+                    <img src="https://placehold.co/120x60/888/fff?text=Square" alt="Square Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=Asana" alt="Asana Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=Airtable" alt="Airtable Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=DoorDash" alt="DoorDash Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=Shopify" alt="Shopify Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=Dropbox" alt="Dropbox Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=Slack" alt="Slack Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                    <img src="https://placehold.co/120x60/888/fff?text=Segment" alt="Segment Logo" class="w-24 md:w-32 grayscale opacity-40 hover:opacity-100 transition-opacity flex-shrink-0 mx-8">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Google Calendar Embed Section -->
+    <!-- The id has been added here to link the button -->
+    <!-- Used the new default class for a precise width -->
+    <!-- I have added `rounded-lg` and updated the vertical padding `py-8` to `py-16` to `py-12` -->
+    <section id="appointment-section" class="container max-w-7xl mx-auto px-4 py-12 md:py-20 rounded-3xl">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-800">Book an Appointment</h2>
+        </div>
+        <div class="w-full overflow-hidden">
+            <!-- The scrolling attribute has been added to the iframe to remove the scrollbar -->
+            <iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3YtajHS5VZxszc9RA-GH_tLGrvNDPAZlsfJpqQ4i7HbRMCkoj-pUrHLF5MePkFhLm6dGbmSScb?gv=true" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no" class="rounded-3xl shadow-xl"></iframe>
+        </div>
+    </section>
+
+    <!-- Custom Message Box and Overlay -->
+    <div id="overlay" class="overlay hidden"></div>
+    <div id="messageBox" class="message-box hidden">
+        <h3 class="text-xl font-bold text-green-custom mb-4">Contact Us</h3>
+        <p class="text-gray-777 mb-6">Thank you for your interest! A Madsheets representative will be in contact with you shortly.</p>
+        <button onclick="hideMessage()" class="px-6 py-2 bg-green-custom text-white rounded-full font-semibold transition-all hover:bg-green-custom hover:bg-opacity-80">
+            CLOSE
+        </button>
+    </div>
+
+    <!-- JavaScript for form and message box functionality -->
+    <script>
+        function showMessage() {
+            document.getElementById('messageBox').classList.remove('hidden');
+            document.getElementById('overlay').classList.remove('hidden');
+        }
+
+        function hideMessage() {
+            document.getElementById('messageBox').classList.add('hidden');
+            document.getElementById('overlay').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
